@@ -1,21 +1,27 @@
-#[derive(Debug)]
+#[derive(Debug, Clone, PartialEq)]
 pub enum Token {
     Identifier(String),
-    Int(i32),
+    Number(Number),
     Keyword(Keyword),
     Operator(Operator),
 }
-#[derive(Debug)]
+#[derive(Debug, Clone, Copy, PartialEq)]
 pub enum Operator {
     Add,
     Subtract,
     Multiply,
     Divide,
 }
-#[derive(Debug)]
+#[derive(Debug, Clone, Copy, PartialEq)]
 pub enum Keyword {
     Equals,
     Assign,
+    Semicolon,
+}
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub enum Number {
+    Float(f64),
+    Int(i32),
 }
 
 pub fn lex(contents: String) -> Vec<Token> {
@@ -30,7 +36,11 @@ pub fn lex(contents: String) -> Vec<Token> {
 
 fn get_token(slice: &str) -> Token {
     if let Result::Ok(value) = slice.parse::<i32>() {
-        return Token::Int(value);
+        return Token::Number(Number::Int(value));
+    }
+
+    if let Result::Ok(value) = slice.parse::<f64>() {
+        return Token::Number(Number::Float(value));
     }
 
     if slice.len() == 1 {
@@ -41,9 +51,10 @@ fn get_token(slice: &str) -> Token {
             "/" => return Token::Operator(Operator::Divide),
             "=" => return Token::Keyword(Keyword::Equals),
             ":" => return Token::Keyword(Keyword::Assign),
+            ";" => return  Token::Keyword(Keyword::Semicolon),
             _ => println!("Non Operator"),
         }
-    } 
+    }
 
     if slice.chars().all(char::is_alphanumeric) {
         return Token::Identifier(slice.to_string());

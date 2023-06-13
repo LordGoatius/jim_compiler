@@ -1,0 +1,4 @@
+pi : 3.1415 ;
+diam : 6 ;
+rad : / diam 2 ;
+* pi rad = ;

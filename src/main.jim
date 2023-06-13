@@ -1,5 +1,6 @@
-+ 1 1 =
-five : 5
-six : 6
-- five six =
-- + five six 10 =
++ 1 1 = ;
+five : 5 ;
+six : 6 ;
+fourpoint7 : 4.7 ;
+- five six = ;
+- + five six 10 = ;

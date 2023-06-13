@@ -1,0 +1,9 @@
+<program>    ::= <statement>*
+<statement>  ::= <assignment> ";" |
+                      <print> ";" |
+<value>      ::= <expression> |
+                     "Number" |
+                 "Identifier" |
+<assignment> ::= "Identifier" ":" <value>
+<expression> ::= "Operator" <value> <value> 
+<print>      ::= <expression> "="
