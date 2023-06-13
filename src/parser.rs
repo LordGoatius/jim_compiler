@@ -137,7 +137,7 @@ fn parse_assignment(tokens: &[Token]) -> Statement {
         panic!("Incorrect assignment keyword");
     }
 
-    let value = parse_value_2(&tokens[2..]);
+    value = parse_value_2(&tokens[2..]);
 
     return Statement::Assignment(
         Assignment { 
