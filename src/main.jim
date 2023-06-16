@@ -4,3 +4,4 @@ six : 6 ;
 fourpoint7 : 4.7 ;
 - five six = ;
 - + five six 10 = ;
++ 0 fourpoint7 = ;
