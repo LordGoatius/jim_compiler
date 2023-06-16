@@ -3,6 +3,7 @@ pub mod lexer;
 pub mod parser;
 pub mod runtime;
 pub mod repl;
+pub mod generation;
 
 use std::env;
 use std::fs;
@@ -28,7 +29,8 @@ fn main() {
 fn run(contents: String) {
     let tokens = tokenize(contents);
     let ast = parser::parse(tokens);
-    runtime::interpret(ast);
+    // runtime::interpret(ast);
+    generation::generate(ast);
 }
 
 fn tokenize(contents: String) -> Vec<lexer::Token>{
