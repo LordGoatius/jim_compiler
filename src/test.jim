@@ -1,4 +1,5 @@
-pi : 3.1415 ;
-diam : 6 ;
-rad : / diam 2 ;
-* pi rad = ;
+six : 6 ;
+seven : 7 ;
+eight : 8 ;
+nine : 9 ;
+* - + six seven eight nine = ;

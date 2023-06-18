@@ -33,15 +33,23 @@ pub fn generate(ast: Program) {
 
 }
 
-fn next_id(ids: &mut Vec<String>) {
+fn next_id(ids: &mut Vec<String>) -> String {
     match ids.last() {
         Some(last) => {
             let num = &mut last[2..].parse::<i32>().unwrap();
             *num = *num + 1;
             ids.push(format!("id{}",num));
+            format!("id{}",num)
         },
-        None => ids.push("id1".to_string()),
+        None => {
+            ids.push("id1".to_string());
+            "id1".to_string()
+      },
     }
+}
+
+fn curr_id(ids: &mut Vec<String>) -> String {
+    return ids.last().unwrap().to_string();
 }
 
 fn parse_assignment(statement: Statement, vars: &mut HashMap<String, String>, ids: &mut Vec<String>) -> Vec<String> {
@@ -61,29 +69,37 @@ fn parse_assignment(statement: Statement, vars: &mut HashMap<String, String>, id
 
 fn parse_print(statement: Statement, vars: &mut HashMap<String, String>, ids: &mut Vec<String>) -> Vec<String> {
     let mut code: Vec<String> = Vec::new(); 
-    next_id(ids);
     if let Statement::Print(print) = statement {
+        let id_value = next_id(ids);
         code.append(&mut parse_value(print.expression, vars, ids));
-        let id_value = ids.last().unwrap();
         code.append(& mut vec![format!("print = {}",id_value)]);
         code
     } else { panic!("how"); }
 }
+/*
+parse print: next id = value calculated, current id = next id
+    if expression
+    value calculated = current id
+        value_1 = stored in next
+        value_2 = stored in next
+        ret current = val1 op val2
 
+ */
 fn parse_value(statement: Value, vars: &mut HashMap<String, String>, ids: &mut Vec<String>) -> Vec<String> {
     match statement {
         Value::Expression(expr) => {
-            next_id(ids);
             let clone = ids.clone();
             let id = clone.last().unwrap();
 
+            let id_val_1 = next_id(ids);
             let mut val_1 = parse_value(expr.value_1, vars, ids);
-            let clone_1 = ids.clone();
-            let id_val_1 = clone_1.last().unwrap();
+            // let clone_1 = ids.clone();
+            // let id_val_1 = clone_1.last().unwrap();
 
+            let id_val_2 = next_id(ids);
             let mut val_2 = parse_value(expr.value_2, vars, ids);
-            let id_val_2 = ids.last().unwrap();
-
+            // let id_val_2 = ids.last().unwrap();
+            
             let mut to_return: Vec<String> = Vec::new();
             to_return.append(&mut val_1);
             to_return.append(&mut val_2);
@@ -93,11 +109,13 @@ fn parse_value(statement: Value, vars: &mut HashMap<String, String>, ids: &mut V
         },
         Value::Identifier(ident) => {
             if let Token::Identifier(ident) = ident {
-                return vec![format!("{} = {}",ids.last().unwrap().to_string(),vars[&ident])]
-            } else {panic!("What the hell happened here"); }
+                let next = curr_id(ids);
+                return vec![format!("{} = {}",next,vars[&ident])]
+            } else { panic!("What the hell happened here"); }
         },
         Value::Number(num) => {
-            return vec![format!("{} = {}",ids.last().unwrap().to_string(),num.to_string())]
+            let next = curr_id(ids);
+            return vec![format!("{} = {}",next,num.to_string())]
         },
     }
 }
