@@ -4,7 +4,7 @@ use std::fs::File;
 use std::io::prelude::*;
 use std::collections::HashMap;
 
-pub fn generate(ast: Program) {
+pub fn generate(ast: Program) -> File {
     let mut variable_map: HashMap<String, String> = HashMap::new();
     let mut ids: Vec<String> = Vec::new();
 
@@ -30,6 +30,8 @@ pub fn generate(ast: Program) {
 
     let mut file = File::create("main.ir").unwrap();
     file.write_all(str.as_bytes()).unwrap();
+
+    return file;
 
 }
 

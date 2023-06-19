@@ -1,9 +1,10 @@
-pub mod ast;
 pub mod lexer;
+pub mod ast;
 pub mod parser;
 pub mod runtime;
 pub mod repl;
-pub mod generation;
+pub mod generator;
+pub mod assembler;
 
 use std::env;
 use std::fs;
@@ -22,15 +23,25 @@ fn main() {
 
         let contents = fs::read_to_string(file_path).expect("File read err");
         
-        run(contents);
+        if args.contains(&"-C".to_string()) || args.contains(&"--c".to_string()) {
+            compile(contents);
+        } else {
+            interpret(contents);
+        }
     }
 }
 
-fn run(contents: String) {
+fn compile(contents: String) {
     let tokens = tokenize(contents);
     let ast = parser::parse(tokens);
-    // runtime::interpret(ast);
-    generation::generate(ast);
+    let file = generator::generate(ast);
+    assembler::assemble(file);
+}
+
+fn interpret(contents: String) {
+    let tokens = tokenize(contents);
+    let ast = parser::parse(tokens);
+    runtime::interpret(ast);
 }
 
 fn tokenize(contents: String) -> Vec<lexer::Token>{
