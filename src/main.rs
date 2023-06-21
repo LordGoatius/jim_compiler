@@ -34,8 +34,8 @@ fn main() {
 fn compile(contents: String) {
     let tokens = tokenize(contents);
     let ast = parser::parse(tokens);
-    let file = generator::generate(ast);
-    assembler::assemble(file);
+    let mut file = generator::generate(ast);
+    assembler::assemble(&mut file);
 }
 
 fn interpret(contents: String) {

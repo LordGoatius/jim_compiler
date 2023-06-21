@@ -2,3 +2,7 @@
 *.xml
 *.json
 *.ir
+*.s
+*.o
+main
+hello
