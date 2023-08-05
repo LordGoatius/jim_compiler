@@ -38,7 +38,7 @@ pub fn generate(ast: Program) -> File {
 fn next_id(ids: &mut Vec<String>) -> String {
     match ids.last() {
         Some(last) => {
-            let num = &mut last[2..].parse::<i32>().unwrap();
+            let num = &mut last[2..].parse::<i64>().unwrap();
             *num = *num + 1;
             ids.push(format!("id{}",num));
             format!("id{}",num)

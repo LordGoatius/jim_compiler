@@ -6,6 +6,7 @@ pub mod repl;
 pub mod generator;
 pub mod assembler;
 
+use core::panic;
 use std::env;
 use std::fs;
 use std::fs::File;
@@ -19,7 +20,7 @@ fn main() {
         println!("Jimlang REPL v0.1.0");
         repl::start_repl();
     } else {
-        let file_path = &args[1];
+        let file_path = &args[find_file(&args)];
 
         let contents = fs::read_to_string(file_path).expect("File read err");
         
@@ -46,6 +47,13 @@ fn interpret(contents: String) {
 
 fn tokenize(contents: String) -> Vec<lexer::Token>{
     lexer::lex(contents)
+}
+
+fn find_file(args: &Vec<String>) -> usize {
+    match args.iter().position(|x| x.contains(".jim")) {
+        Some(val) => val,
+        None => panic!("No file provied (make sure it ends in .jim)")
+    }
 }
 
 #[allow(dead_code)]

@@ -56,7 +56,7 @@ impl Keyword {
 #[derive(Debug, Clone, Copy, PartialEq, Deserialize, Serialize)]
 pub enum Number {
     Float(f64),
-    Int(i32),
+    Int(i64),
 }
 
 impl Number {
@@ -69,7 +69,7 @@ impl Number {
 
     pub fn to_int(&self) -> Number {
         match self {
-            Number::Float(num) => Number::Int(*num as i32),
+            Number::Float(num) => Number::Int(*num as i64),
             Number::Int(_) => *self,
         }
     }
@@ -81,9 +81,9 @@ impl Number {
         }
     }
 
-    pub fn ret_int(self) -> i32 {
+    pub fn ret_int(self) -> i64 {
         match self {
-            Number::Float(num) => num as i32,
+            Number::Float(num) => num as i64,
             Number::Int(num) => num,
         }
     }
@@ -107,7 +107,7 @@ pub fn lex(contents: String) -> Vec<Token> {
 }
 
 fn get_token(slice: &str) -> Token {
-    if let Result::Ok(value) = slice.parse::<i32>() {
+    if let Result::Ok(value) = slice.parse::<i64>() {
         return Token::Number(Number::Int(value));
     }
 
