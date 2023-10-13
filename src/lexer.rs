@@ -123,7 +123,7 @@ fn get_token(slice: &str) -> Token {
             "/" => return Token::Operator(Operator::Divide),
             "=" => return Token::Keyword(Keyword::Equals),
             ":" => return Token::Keyword(Keyword::Assign),
-            ";" => return  Token::Keyword(Keyword::Semicolon),
+            ";" => return Token::Keyword(Keyword::Semicolon),
             _ => println!("Non Operator"),
         }
     }

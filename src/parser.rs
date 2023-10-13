@@ -141,9 +141,9 @@ fn parse_assignment(tokens: &[Token]) -> Statement {
 
     return Statement::Assignment(
         Assignment { 
-            identifier: identifier, 
-            assign: assign, 
-            value: value,
+            identifier, 
+            assign, 
+            value,
         }
     );
     
